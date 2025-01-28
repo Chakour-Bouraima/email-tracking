@@ -4,7 +4,9 @@ from PIL import Image
 import io
 
 
+
 app = Flask(__name__)
+
 @app.route('/pixel')
 def track_email():
     uuid_received = request.args.get('id')
@@ -32,4 +34,4 @@ def track_email():
     return send_file(img_io, mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000,debug=True)
