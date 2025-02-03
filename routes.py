@@ -1,13 +1,10 @@
-from flask import Flask, request, send_file
+from flask import Flask, render_template, request, send_file
 import sqlite3
 from PIL import Image
 import io
 
-
-
-app = Flask(__name__)
-
-@app.route('/pixel')
+def home():
+    return render_template()
 def track_email():
     uuid_received = request.args.get('id')
 
@@ -33,5 +30,3 @@ def track_email():
     # Transparentes 1x1-Pixel-Bild zurückgeben
     return send_file(img_io, mimetype='image/png')
 
-if __name__ == '__main__':
-    app.run(port=5000,debug=True)
