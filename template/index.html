@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Tracking Statistik</title>
+        
+        <!-- Lokale Bootstrap CSS einbinden -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">📊 Email Tracking Statistik</h2>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Benutzername</th>
+                        <th>Email</th>
+                        <th>Öffnungszeit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for eintrag in daten %}
+                    <tr>
+                        <td>{{ eintrag[0] }}</td>
+                        <td>{{ eintrag[1] }}</td>
+                        <td>{{ eintrag[2] if eintrag[2] else "Noch nicht geöffnet" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Lokale Bootstrap JavaScript-Dateien einbinden -->
+
+</body>
+</html>
