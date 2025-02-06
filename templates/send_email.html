@@ -7,31 +7,44 @@
     <!-- Lokale Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='srcipt.js') }}"></script>
     <!-- Eigene CSS Datei einbinden -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="card shadow-lg p-4">
-            <h2 class="text-center">📧 E-Mail senden</h2>
-            <form method="POST">
-                <div class="mb-3">
-                    <label for="recipient" class="form-label">Empfänger</label>
-                    <input type="email" name="recipient" class="form-control" placeholder="E-Mail-Adresse" required>
-                </div>
-                <div class="mb-3">
-                    <label for="subject" class="form-label">Betreff</label>
-                    <input type="text" name="subject" class="form-control" placeholder="Betreff" required>
-                </div>
-                <div class="mb-3">
-                    <label for="message" class="form-label">Nachricht</label>
-                    <textarea name="message" class="form-control" rows="5" placeholder="Deine Nachricht..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">E-Mail senden</button>
-            </form>
-        </div>
-    </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='email.css') }}">
     
+</head>
 
+<body>
+
+<div class="container">
+    <h2 class="text-center text-primary">📧 E-Mail Versender</h2>
+    
+    <div id="statusMessage"></div>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="recipient" class="form-label">Empfänger E-Mail</label>
+            <input type="email" class="form-control" id="recipient" name="recipient" required>
+        </div>
+        <div class="mb-3">
+            <label for="subject" class="form-label">Betreff</label>
+            <input type="text" class="form-control" id="subject" name="subject" required>
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Nachricht (HTML erlaubt)</label>
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+        
+        <!-- Live-Vorschau -->
+        <h6 class="mt-3">📄 Vorschau der HTML-Mail:</h6>
+        <div class="preview-box" id="previewBox">(Hier erscheint die Vorschau...)</div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">📤 E-Mail senden</button>
+    </form>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
