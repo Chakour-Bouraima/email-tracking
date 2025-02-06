@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Tracking Statistik</title>
+
+    <!-- Lokale Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    
+    <!-- Eigene CSS Datei einbinden -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">📊 Email Tracking Statistik</h2>
+        
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Benutzername</th>
+                        <th>Email</th>
+                        <th>Öffnungszeit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for eintrag in daten %}
+                    <tr  >
+                        <td class="{% if not eintrag[2] %}table-danger-row{% endif %}">{{ eintrag[0] }}</td>
+                        <td class="{% if not eintrag[2] %}table-danger-row{% endif %}">{{ eintrag[1] }}</td>
+                        <td class="{% if not eintrag[2] %}table-danger-row{% endif %}">{{ eintrag[2] if eintrag[2] else "Noch nicht geöffnet" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Lokale Bootstrap JavaScript-Dateien -->
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+</body>
+</html>

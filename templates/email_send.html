@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-Mail senden</title>
+    <!-- Lokale Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Eigene CSS Datei einbinden -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h2 class="text-center">📧 E-Mail senden</h2>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="recipient" class="form-label">Empfänger</label>
+                    <input type="email" name="recipient" class="form-control" placeholder="E-Mail-Adresse" required>
+                </div>
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Betreff</label>
+                    <input type="text" name="subject" class="form-control" placeholder="Betreff" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Nachricht</label>
+                    <textarea name="message" class="form-control" rows="5" placeholder="Deine Nachricht..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">E-Mail senden</button>
+            </form>
+        </div>
+    </div>
+    
+
+</body>
+</html>

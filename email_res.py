@@ -1,4 +1,4 @@
-from database import insert_tracking_data
+from Database import insert_tracking_data
 
 # Benutzer nach Name und E-Mail fragen
 user_name = input("Bitte geben Sie den Benutzernamen ein: ")

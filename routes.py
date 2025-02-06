@@ -4,7 +4,13 @@ from PIL import Image
 import io
 
 def home():
-    return render_template()
+    conn = sqlite3.connect('tracking.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT user_name, email, opened_at FROM email_tracking")
+    daten = cursor.fetchall()
+    conn.close()
+    
+    return render_template("index.html", daten=daten)
 def track_email():
     uuid_received = request.args.get('id')
 
@@ -23,7 +29,7 @@ def track_email():
         print(f"E-Mail geöffnet von: {user_name} ({email})")
 
         # Update Öffnungszeit
-        cursor.execute("UPDATE email_tracking SET opened_at = datetime('now') WHERE uuid = ?", (uuid_received,))
+        cursor.execute("UPDATE email_tracking SET opened_at = datetime('now', 'localtime') WHERE uuid = ?", (uuid_received,))
         conn.commit()
     conn.close()
 
