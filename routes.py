@@ -29,7 +29,7 @@ def track_email():
         print(f"E-Mail geöffnet von: {user_name} ({email})")
 
         # Update Öffnungszeit
-        cursor.execute("UPDATE email_tracking SET opened_at = datetime('now') WHERE uuid = ?", (uuid_received,))
+        cursor.execute("UPDATE email_tracking SET opened_at = datetime('now', 'localtime') WHERE uuid = ?", (uuid_received,))
         conn.commit()
     conn.close()
 
