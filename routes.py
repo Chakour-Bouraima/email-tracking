@@ -69,26 +69,43 @@ def home():
     return render_template("index.html", daten=daten)
 def track_email():
     uuid_received = request.args.get('id')
+    user_ip = request.remote_addr  # IP-Adresse des Nutzers
+    user_agent = request.headers.get('User-Agent', 'Unbekannt')  # User-Agent (Browser, Gerät)
+    referer = request.headers.get('Referer', 'Keine Angabe')  # Quelle der Anfrage
 
+    # Tracking-Pixel erstellen
     img = Image.new('RGBA', (1, 1), (0, 0, 0, 0))
     img_io = io.BytesIO()
     img.save(img_io, 'PNG')
     img_io.seek(0)
 
+    # Verbindung zur Datenbank
     conn = sqlite3.connect('tracking.db')
     cursor = conn.cursor()
+
+    # Abrufen der User-Daten
     cursor.execute("SELECT user_name, email FROM email_tracking WHERE uuid = ?", (uuid_received,))
     result = cursor.fetchone()
 
     if result:
         user_name, email = result
-        print(f"E-Mail geöffnet von: {user_name} ({email})")
+        print(f"E-Mail geöffnet von: {user_name} ({email}) - IP: {user_ip}, User-Agent: {user_agent}, Referer: {referer}")
 
-        # Update Öffnungszeit
-        cursor.execute("UPDATE email_tracking SET opened_at = datetime('now', 'localtime') WHERE uuid = ?", (uuid_received,))
+        # Datenbank-Eintrag mit zusätzlichen Infos aktualisieren
+        cursor.execute("""
+            UPDATE email_tracking 
+            SET opened_at = datetime('now', 'localtime'), 
+                ip_address = ?, 
+                user_agent = ?, 
+                referer = ?
+            WHERE uuid = ?
+        """, (user_ip, user_agent, referer, uuid_received))
+
         conn.commit()
+
     conn.close()
 
     # Transparentes 1x1-Pixel-Bild zurückgeben
     return send_file(img_io, mimetype='image/png')
+
 
