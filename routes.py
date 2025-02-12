@@ -92,15 +92,18 @@ def track_email():
         print(f"E-Mail geöffnet von: {user_name} ({email}) - IP: {user_ip}, User-Agent: {user_agent}, Referer: {referer}")
 
         # Datenbank-Eintrag mit zusätzlichen Infos aktualisieren
-        cursor.execute("""
-            UPDATE email_tracking 
-            SET opened_at = datetime('now', 'localtime'), 
-                ip_address = ?, 
-                user_agent = ?, 
-                referer = ?
-            WHERE uuid = ?
-        """, (user_ip, user_agent, referer, uuid_received))
+        query = """UPDATE email_tracking 
+           SET opened_at = datetime('now', 'localtime'), 
+               user_agent = ?, 
+               ip_address = ?, 
+               referer = ? 
+           WHERE uuid = ?"""
 
+        params = (user_ip, user_agent, referer, uuid_received)
+
+        print(f"Executing SQL: {query} with values {params}")
+
+        cursor.execute(query, params)
         conn.commit()
 
     conn.close()
