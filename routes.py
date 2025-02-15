@@ -62,10 +62,9 @@ def send_email_api():
 def home():
     conn = sqlite3.connect('tracking.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT user_name, email, opened_at FROM email_tracking")
+    cursor.execute("SELECT user_name,email,ip_address,user_agent,opened_at FROM email_tracking")
     daten = cursor.fetchall()
     conn.close()
-    
     return render_template("index.html", daten=daten)
 def track_email():
     uuid_received = request.args.get('id')

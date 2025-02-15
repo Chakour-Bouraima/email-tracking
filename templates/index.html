@@ -14,7 +14,7 @@
 {% include 'nav.html' %}
 <body class="bg-light">
     <div class="container mt-5">
-        <h2 class="text-center mb-4">📊 Email Tracking Statistik</h2>
+        <h4 class="text-center mb-4">📊 Email Tracking Statistik</h4>
         
         <div class="table-responsive">
             <table class="table table-striped">
@@ -22,15 +22,24 @@
                     <tr>
                         <th>Benutzername</th>
                         <th>Email</th>
-                        <th>Öffnungszeit</th>
+                        <th>IP_Address</th>
+                        <th>User Agent</th>
+                        <th>Timestemp</th>
+                        <th>Opened_date</th>
+                        
+                        
                     </tr>
                 </thead>
                 <tbody>
                     {% for eintrag in daten %}
                     <tr  >
-                        <td class="{% if not eintrag[2] %}table-danger-row{% endif %}">{{ eintrag[0] }}</td>
-                        <td class="{% if not eintrag[2] %}table-danger-row{% endif %}">{{ eintrag[1] }}</td>
-                        <td class="{% if not eintrag[2] %}table-danger-row{% endif %}">{{ eintrag[2] if eintrag[2] else "Noch nicht geöffnet" }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[0] }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[1] }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[3] }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[2] }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[4] }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[4] if eintrag[4] else "Noch nicht geöffnet" }}</td>
+                        
                     </tr>
                     {% endfor %}
                 </tbody>
