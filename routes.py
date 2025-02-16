@@ -104,7 +104,7 @@ def track_email():
 
         # Datenbank-Eintrag mit zusätzlichen Infos aktualisieren
         query = """UPDATE email_tracking 
-           SET opened_at = datetime('now'), 
+           SET opened_at = datetime('now', 'localtime'), 
                user_agent = ?, 
                ip_address = ?, 
                referer = ? 
