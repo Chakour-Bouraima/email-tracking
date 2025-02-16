@@ -3,6 +3,7 @@ from flask_mail import Mail, Message
 import sqlite3
 from PIL import Image
 import io
+from encrypt import *
 
 
 import os
@@ -64,13 +65,22 @@ def home():
     cursor = conn.cursor()
     cursor.execute("SELECT user_name,email,ip_address,user_agent,opened_at FROM email_tracking")
     daten = cursor.fetchall()
+    entschlüsselte_daten = [
+     (decrypt_aes_gcm(row[0], keyr()),  # Entschlüssele data1
+     decrypt_aes_gcm(row[1], keyr()),  # Entschlüssele data2
+     decrypt_aes_gcm(row[2], keyr()),
+     decrypt_aes_gcm(row[3], keyr()),
+     row[4]
+     )  # data4 bleibt unverändert
+    for row in daten
+]
     conn.close()
-    return render_template("index.html", daten=daten)
+    return render_template("index.html", daten=entschlüsselte_daten)
 def track_email():
     uuid_received = request.args.get('id')
-    user_ip = request.remote_addr  # IP-Adresse des Nutzers
-    user_agent = request.headers.get('User-Agent', 'Unbekannt')  # User-Agent (Browser, Gerät)
-    referer = request.headers.get('Referer', 'Keine Angabe')  # Quelle der Anfrage
+    user_ip = encrypt_aes_gcm(request.remote_addr,keyr())  # IP-Adresse des Nutzers
+    user_agent = encrypt_aes_gcm(request.headers.get('User-Agent', 'Unbekannt'),keyr())  # User-Agent (Browser, Gerät)
+    referer = encrypt_aes_gcm(request.headers.get('Referer', 'Keine Angabe'),keyr())  # Quelle der Anfrage
 
     # Tracking-Pixel erstellen
     img = Image.new('RGBA', (1, 1), (0, 0, 0, 0))
@@ -88,11 +98,13 @@ def track_email():
 
     if result:
         user_name, email = result
-        print(f"E-Mail geöffnet von: {user_name} ({email}) - IP: {user_ip}, User-Agent: {user_agent}, Referer: {referer}")
+        email = decrypt_aes_gcm(email,keyr()) 
+        user_name = decrypt_aes_gcm(user_name,keyr()) 
+        print(f"E-Mail geöffnet von: {user_name} ({email}) - IP: {decrypt_aes_gcm(user_ip,keyr())}, User-Agent: {decrypt_aes_gcm(user_agent,keyr())}, Referer: {decrypt_aes_gcm(referer,keyr())}")
 
         # Datenbank-Eintrag mit zusätzlichen Infos aktualisieren
         query = """UPDATE email_tracking 
-           SET opened_at = datetime('now', 'localtime'), 
+           SET opened_at = datetime('now'), 
                user_agent = ?, 
                ip_address = ?, 
                referer = ? 
@@ -100,7 +112,7 @@ def track_email():
 
         params = (user_ip, user_agent, referer, uuid_received)
 
-        print(f"Executing SQL: {query} with values {params}")
+        
 
         cursor.execute(query, params)
         conn.commit()

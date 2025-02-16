@@ -37,7 +37,7 @@
                         <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[1] }}</td>
                         <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[3] }}</td>
                         <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[2] }}</td>
-                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[4] }}</td>
+                        <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[4] if eintrag[4] else "leer"  }}</td>
                         <td class="{% if not eintrag[4] %}table-danger-row{% endif %}">{{ eintrag[4] if eintrag[4] else "Noch nicht geöffnet" }}</td>
                         
                     </tr>
